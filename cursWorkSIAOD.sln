@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cursWorkSIAOD", "cursWorkSIAOD\cursWorkSIAOD.vcxproj", "{4B848D19-512C-4109-B7D7-8ECBE20523A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B328E5E-3B3E-4D95-9176-2664AB6B458D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\testBase4.dat = ..\..\..\Desktop\testBase4.dat
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Debug|x64.ActiveCfg = Debug|x64
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Debug|x64.Build.0 = Debug|x64
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Debug|x86.ActiveCfg = Debug|Win32
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Debug|x86.Build.0 = Debug|Win32
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Release|x64.ActiveCfg = Release|x64
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Release|x64.Build.0 = Release|x64
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Release|x86.ActiveCfg = Release|Win32
+		{4B848D19-512C-4109-B7D7-8ECBE20523A5}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F385FE5F-780E-48AC-A330-7310DCBA475E}
+	EndGlobalSection
+EndGlobal
