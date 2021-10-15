@@ -41,13 +41,38 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 	int l = 2 * i + 1;
 	int r = 2 * i + 2;
 
+
 	if (order == BYDATEOFSETTLING)
 	{
 		if (l < size)
 		{
-			if (data[arr[l]].dateOfSettling[7] >= data[arr[largest]].dateOfSettling[7])
+			if (data[arr[l]].dateOfSettling[7] > data[arr[largest]].dateOfSettling[7])
 			{
 				largest = l;
+			}
+			if (data[arr[l]].dateOfSettling[7] == data[arr[largest]].dateOfSettling[7])
+			{
+				char bufForLargest[2];
+				char bufForL[2];
+				bufForLargest[0] = data[arr[largest]].dateOfSettling[3];
+				bufForLargest[1] = data[arr[largest]].dateOfSettling[4];
+				bufForL[0] = data[arr[l]].dateOfSettling[3];
+				bufForL[0] = data[arr[l]].dateOfSettling[4];
+				if (charToInt(bufForL) > charToInt(bufForLargest))
+				{
+					largest = l;
+				}
+				if (charToInt(bufForL) == charToInt(bufForLargest))
+				{
+					bufForLargest[0] = data[arr[largest]].dateOfSettling[0];
+					bufForLargest[1] = data[arr[largest]].dateOfSettling[1];
+					bufForL[0] = data[arr[l]].dateOfSettling[0];
+					bufForL[1] = data[arr[l]].dateOfSettling[1];
+					if (charToInt(bufForL) > charToInt(bufForLargest))
+					{
+						largest = l;
+					}
+				}
 			}
 		}
 
@@ -57,8 +82,34 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 			{
 				largest = r;
 			}
+			if (data[arr[r]].dateOfSettling[7] == data[arr[largest]].dateOfSettling[7])
+			{
+				char bufForLargest[2];
+				char bufForR[2];
+				bufForLargest[0] = data[arr[largest]].dateOfSettling[3];
+				bufForLargest[1] = data[arr[largest]].dateOfSettling[4];
+				bufForR[0] = data[arr[r]].dateOfSettling[3];
+				bufForR[0] = data[arr[r]].dateOfSettling[4];
+				if (charToInt(bufForR) > charToInt(bufForLargest))
+				{
+					largest = r;
+				}
+				if (charToInt(bufForR) == charToInt(bufForLargest))
+				{
+					bufForLargest[0] = data[arr[largest]].dateOfSettling[0];
+					bufForLargest[1] = data[arr[largest]].dateOfSettling[1];
+					bufForR[0] = data[arr[r]].dateOfSettling[0];
+					bufForR[1] = data[arr[r]].dateOfSettling[1];
+					if (charToInt(bufForR) > charToInt(bufForLargest))
+					{
+						largest = r;
+					}
+				}
+			}
 		}
 	}
+
+
 	if (order == BYSTREETNAME) {
 		if (l < size && data[arr[l]].streetAdress[0] >= data[arr[largest]].streetAdress[0])
 		{
@@ -69,6 +120,8 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 			largest = r;
 		}
 	}
+
+
 	if (largest != i)
 	{
 		swap(arr[i], arr[largest]);
@@ -195,7 +248,7 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 int main()
 {
 	FILE* fileOut; 
-	int tSize = 100;
+	int tSize = 10;
 	fopen_s(&fileOut, Path, "rb");
 	record recordBuffer[Size] = { 0 };
 	int counter = 0;
