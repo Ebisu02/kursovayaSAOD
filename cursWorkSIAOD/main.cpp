@@ -45,7 +45,7 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 	{
 		if (l < size)
 		{
-			if (data[arr[l]].dateOfSettling[7] > data[arr[largest]].dateOfSettling[7])
+			if (data[arr[l]].dateOfSettling[7] >= data[arr[largest]].dateOfSettling[7])
 			{
 				largest = l;
 			}
@@ -53,7 +53,7 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 
 		if (r < size)
 		{
-			if (data[arr[r]].dateOfSettling[7] > data[arr[largest]].dateOfSettling[7])
+			if (data[arr[r]].dateOfSettling[7] >= data[arr[largest]].dateOfSettling[7])
 			{
 				largest = r;
 			}
@@ -113,7 +113,8 @@ void printRecordByIndexArray(int* indexArray, int size)
 void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 {
 	int left = 0;
-	int right = size - 1;
+	int right = size;
+	int amountOfVariants = 0;
 	while (left <= right)
 	{
 		int mid = (left + right) / 2;
@@ -122,13 +123,37 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 		bufForCompare[1] = data[indexArray[mid]].dateOfSettling[7];
 		if (bufForCompare[0] == key[0] && bufForCompare[1] == key[1])
 		{
+			++amountOfVariants;
 			cout << "\n\n\nFullName                        |" << "Street Name        |" << "House Number|" << "Floor number|" << "Date of Settling|" << "\n";
 			cout << "--------------------------------|-------------------|------------|------------|----------------|\n";
-			cout << data[indexArray[mid]].fullName << " | " << data[indexArray[mid]].streetAdress << " | " << data[indexArray[mid]].numOfHouse << " \t | " << data[indexArray[mid]].numOfFloor << "\t      | " << data[indexArray[mid]].dateOfSettling << "      |" << "\n";
-			int flag = 2;
-			int gRight = mid + 1;
+			bool fLeft = true;
 			int gLeft = mid - 1;
-			while (flag >= 1)
+			while (fLeft)
+			{
+				if (gLeft >= 0)
+				{
+					char bufForCompareLeft[2];
+					bufForCompareLeft[0] = data[indexArray[gLeft]].dateOfSettling[6];
+					bufForCompareLeft[1] = data[indexArray[gLeft]].dateOfSettling[7];
+					if (bufForCompareLeft[0] == key[0] && bufForCompareLeft[1] == key[1])
+					{
+						++amountOfVariants;
+						cout << data[indexArray[gLeft]].fullName << " | " << data[indexArray[gLeft]].streetAdress << " | " << data[indexArray[gLeft]].numOfHouse << " \t | " << data[indexArray[gLeft]].numOfFloor << "\t      | " << data[indexArray[gLeft]].dateOfSettling << "      |" << "\n";
+						--gLeft;
+					}
+					else {
+						fLeft = false;
+					}
+				}
+				else
+				{
+					fLeft = false;
+				}
+			}
+			cout << data[indexArray[mid]].fullName << " | " << data[indexArray[mid]].streetAdress << " | " << data[indexArray[mid]].numOfHouse << " \t | " << data[indexArray[mid]].numOfFloor << "\t      | " << data[indexArray[mid]].dateOfSettling << "      |" << "\n";
+			bool fRight = true;
+			int gRight = mid + 1;
+			while (fRight)
 			{
 				if (gRight < size)
 				{
@@ -137,32 +162,24 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 					bufForCompareRight[1] = data[indexArray[gRight]].dateOfSettling[7];
 					if (bufForCompareRight[0] == key[0] && bufForCompareRight[1] == key[1])
 					{
+						++amountOfVariants;
 						cout << data[indexArray[gRight]].fullName << " | " << data[indexArray[gRight]].streetAdress << " | " << data[indexArray[gRight]].numOfHouse << " \t | " << data[indexArray[gRight]].numOfFloor << "\t      | " << data[indexArray[gRight]].dateOfSettling << "      |" << "\n";
 						++gRight;
 					}
 					else
 					{
-						flag--;
+						fRight = false;
 					}
 				}
-				if (gLeft >= 0)
+				else
 				{
-					char bufForCompareLeft[2];
-					bufForCompareLeft[0] = data[indexArray[gLeft]].dateOfSettling[6];
-					bufForCompareLeft[1] = data[indexArray[gLeft]].dateOfSettling[7];
-					if (bufForCompareLeft[0] == key[0] && bufForCompareLeft[1] == key[1])
-					{
-						cout << data[indexArray[gLeft]].fullName << " | " << data[indexArray[gLeft]].streetAdress << " | " << data[indexArray[gLeft]].numOfHouse << " \t | " << data[indexArray[gLeft]].numOfFloor << "\t      | " << data[indexArray[gLeft]].dateOfSettling << "      |" << "\n";
-						--gLeft;
-					}
-					else {
-						flag--;
-					}
+					fRight = false;
 				}
 			}
+			cout << "\n\nWas found " << amountOfVariants << " of variants...\n";
 			return;
 		}
-		if (bufForCompare[0] < key[0] && bufForCompare[1] < key[1])
+		if (charToInt(bufForCompare) == charToInt(key))
 		{
 			left = mid + 1;
 		}
@@ -178,11 +195,12 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 int main()
 {
 	FILE* fileOut; 
+	int tSize = 100;
 	fopen_s(&fileOut, Path, "rb");
 	record recordBuffer[Size] = { 0 };
 	int counter = 0;
 	counter = fread((record*)recordBuffer, sizeof(record), Size, fileOut);
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < tSize; ++i)
 	{
 		cout << recordBuffer[i].fullName << " | " << recordBuffer[i].streetAdress << " | " << recordBuffer[i].numOfHouse << " | " << recordBuffer[i].numOfFloor << " | " << recordBuffer[i].dateOfSettling << "\n";
 	}
@@ -190,20 +208,22 @@ int main()
 
 	cout << "\n\n";
 
-	int* indexArray = new int[10];
-	for (int i = 0; i < 10; ++i)
+	int* indexArray = new int[tSize];
+	for (int i = 0; i < tSize; ++i)
 	{
 		indexArray[i] = i;
 	}
-	indexSort(recordBuffer, indexArray, 10, BYDATEOFSETTLING);
-	printRecordByIndexArray(indexArray, 10);
+	indexSort(recordBuffer, indexArray, tSize, BYDATEOFSETTLING);
+	printRecordByIndexArray(indexArray, tSize);
 
 	char buf[2];
 
 	buf[0] = '9';
-	buf[1] = '4';
+	buf[1] = '5';
 
-	findByYearOfSettling(indexArray, recordBuffer, 10, buf);
+	findByYearOfSettling(indexArray, recordBuffer, tSize, buf);
+
+	delete[] indexArray;
 
 	system("PAUSE");
 	return 0;
