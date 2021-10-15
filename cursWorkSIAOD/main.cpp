@@ -234,7 +234,7 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 			cout << "\n\nWas found " << amountOfVariants << " of variants...\n";
 			return;
 		}
-		if (charToInt(bufForCompare) == charToInt(key))
+		if (charToInt(bufForCompare) < charToInt(key))
 		{
 			left = mid + 1;
 		}
