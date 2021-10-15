@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -13,28 +13,28 @@ const int Size = 4000;
 // bd - nas punkt
 struct record
 {
-	char fullName[32]; // <Surname>_<Name>_<Ot4estvo> // Primer - Петpов_Иван_Федоpович___________ 
-	char streetAdress[18]; // Primer - Ленина______________
+	char fullName[32]; // <Surname>_<Name>_<Ot4estvo> // Primer - ГЏГҐГІpГ®Гў_Г€ГўГ Г­_Г”ГҐГ¤Г®pГ®ГўГЁГ·___________ 
+	char streetAdress[18]; // Primer - Г‹ГҐГ­ГЁГ­Г ______________
 	short int numOfHouse; // nomer doma
 	short int numOfFloor; // nomer kvartiri
 	char dateOfSettling[10]; // data zaseleniya // Primer - 29-02-65 // Format: dd-mm-yy
 };
 
-// Словарь...
+// Г‘Г«Г®ГўГ Г°Гј...
 enum Order {
 	BYDATEOFSETTLING,
 	BYSTREETNAME
 };
 
-// Честно - хер знает зачем я это высрал, пытался как-то сравнить дату в формате dd-mm-yy полностью
-// Но пока что забил хер, т.к. сильно влияет на трудоемкость и время и скорость и вообще... Ебал я в рот это на плюсах делать!
+// Г—ГҐГ±ГІГ­Г® - ГµГҐГ° Г§Г­Г ГҐГІ Г§Г Г·ГҐГ¬ Гї ГЅГІГ® ГўГ»Г±Г°Г Г«, ГЇГ»ГІГ Г«Г±Гї ГЄГ ГЄ-ГІГ® Г±Г°Г ГўГ­ГЁГІГј Г¤Г ГІГі Гў ГґГ®Г°Г¬Г ГІГҐ dd-mm-yy ГЇГ®Г«Г­Г®Г±ГІГјГѕ
+// ГЌГ® ГЇГ®ГЄГ  Г·ГІГ® Г§Г ГЎГЁГ« ГµГҐГ°, ГІ.ГЄ. Г±ГЁГ«ГјГ­Г® ГўГ«ГЁГїГҐГІ Г­Г  ГІГ°ГіГ¤Г®ГҐГ¬ГЄГ®Г±ГІГј ГЁ ГўГ°ГҐГ¬Гї ГЁ Г±ГЄГ®Г°Г®Г±ГІГј ГЁ ГўГ®Г®ГЎГ№ГҐ... Г…ГЎГ Г« Гї Гў Г°Г®ГІ ГЅГІГ® Г­Г  ГЇГ«ГѕГ±Г Гµ Г¤ГҐГ«Г ГІГј!
 int charToInt(char* simbol1)
 {
-	return stoi(simbol1); 
+	return stoi(simbol1);
 }
 
-// Тоже сортировка, а именно формирование кучи... Было лень делать 2 отдельные для 2 разных случаев, поэтому сделал словарь
-// Для данной ситуёвины, очень ленивый я, уж извините, знаю, что это плохой тон =)
+// Г’Г®Г¦ГҐ Г±Г®Г°ГІГЁГ°Г®ГўГЄГ , Г  ГЁГ¬ГҐГ­Г­Г® ГґГ®Г°Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ ГЄГіГ·ГЁ... ГЃГ»Г«Г® Г«ГҐГ­Гј Г¤ГҐГ«Г ГІГј 2 Г®ГІГ¤ГҐГ«ГјГ­Г»ГҐ Г¤Г«Гї 2 Г°Г Г§Г­Г»Гµ Г±Г«ГіГ·Г ГҐГў, ГЇГ®ГЅГІГ®Г¬Гі Г±Г¤ГҐГ«Г Г« Г±Г«Г®ГўГ Г°Гј
+// Г„Г«Гї Г¤Г Г­Г­Г®Г© Г±ГЁГІГіВёГўГЁГ­Г», Г®Г·ГҐГ­Гј Г«ГҐГ­ГЁГўГ»Г© Гї, ГіГ¦ ГЁГ§ГўГЁГ­ГЁГІГҐ, Г§Г­Г Гѕ, Г·ГІГ® ГЅГІГ® ГЇГ«Г®ГµГ®Г© ГІГ®Г­ =)
 void makeHeap(int arr[], int size, int i, record* data, Order order)
 {
 	int largest = i;
@@ -44,67 +44,69 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 
 	if (order == BYDATEOFSETTLING)
 	{
+		char bufForLargestY[2];
+		char bufForLargestM[2];
+		char bufForLargestD[2];
+
+		bufForLargestY[0] = data[arr[largest]].dateOfSettling[6];
+		bufForLargestY[1] = data[arr[largest]].dateOfSettling[7];
+		bufForLargestM[0] = data[arr[largest]].dateOfSettling[3];
+		bufForLargestM[1] = data[arr[largest]].dateOfSettling[4];
+		bufForLargestD[0] = data[arr[largest]].dateOfSettling[0];
+		bufForLargestD[1] = data[arr[largest]].dateOfSettling[1];
+
+		long int cLargest = charToInt(bufForLargestY) * 12 * 30 + charToInt(bufForLargestM) * 30 + charToInt(bufForLargestD);
+
+
 		if (l < size)
 		{
-			if (data[arr[l]].dateOfSettling[7] > data[arr[largest]].dateOfSettling[7])
+			char bufForLY[2];
+			char bufForLM[2];
+			char bufForLD[2];
+
+			bufForLY[0] = data[arr[l]].dateOfSettling[6];
+			bufForLY[1] = data[arr[l]].dateOfSettling[7];
+			bufForLM[0] = data[arr[l]].dateOfSettling[3];
+			bufForLM[1] = data[arr[l]].dateOfSettling[4];
+			bufForLD[0] = data[arr[l]].dateOfSettling[0];
+			bufForLD[1] = data[arr[l]].dateOfSettling[1];
+
+			long int cL = charToInt(bufForLY) * 12 * 30 + charToInt(bufForLM) * 30 + charToInt(bufForLD);
+
+			if (cL > cLargest)
 			{
 				largest = l;
 			}
-			if (data[arr[l]].dateOfSettling[7] == data[arr[largest]].dateOfSettling[7])
-			{
-				char bufForLargest[2];
-				char bufForL[2];
-				bufForLargest[0] = data[arr[largest]].dateOfSettling[3];
-				bufForLargest[1] = data[arr[largest]].dateOfSettling[4];
-				bufForL[0] = data[arr[l]].dateOfSettling[3];
-				bufForL[0] = data[arr[l]].dateOfSettling[4];
-				if (charToInt(bufForL) > charToInt(bufForLargest))
-				{
-					largest = l;
-				}
-				if (charToInt(bufForL) == charToInt(bufForLargest))
-				{
-					bufForLargest[0] = data[arr[largest]].dateOfSettling[0];
-					bufForLargest[1] = data[arr[largest]].dateOfSettling[1];
-					bufForL[0] = data[arr[l]].dateOfSettling[0];
-					bufForL[1] = data[arr[l]].dateOfSettling[1];
-					if (charToInt(bufForL) > charToInt(bufForLargest))
-					{
-						largest = l;
-					}
-				}
-			}
 		}
+
+		bufForLargestY[0] = data[arr[largest]].dateOfSettling[6];
+		bufForLargestY[1] = data[arr[largest]].dateOfSettling[7];
+		bufForLargestM[0] = data[arr[largest]].dateOfSettling[3];
+		bufForLargestM[1] = data[arr[largest]].dateOfSettling[4];
+		bufForLargestD[0] = data[arr[largest]].dateOfSettling[0];
+		bufForLargestD[1] = data[arr[largest]].dateOfSettling[1];
+
+		cLargest = (charToInt(bufForLargestY) * 12 * 30) + (charToInt(bufForLargestM) * 30) + charToInt(bufForLargestD);
 
 		if (r < size)
 		{
-			if (data[arr[r]].dateOfSettling[7] >= data[arr[largest]].dateOfSettling[7])
+
+			char bufForRY[2];
+			char bufForRM[2];
+			char bufForRD[2];
+
+			bufForRY[0] = data[arr[r]].dateOfSettling[6];
+			bufForRY[1] = data[arr[r]].dateOfSettling[7];
+			bufForRM[0] = data[arr[r]].dateOfSettling[3];
+			bufForRM[1] = data[arr[r]].dateOfSettling[4];
+			bufForRD[0] = data[arr[r]].dateOfSettling[0];
+			bufForRD[1] = data[arr[r]].dateOfSettling[1];
+
+			long int cR = charToInt(bufForRY) * 12 * 30 + charToInt(bufForRM) * 30 + charToInt(bufForRD);
+
+			if (cR > cLargest)
 			{
 				largest = r;
-			}
-			if (data[arr[r]].dateOfSettling[7] == data[arr[largest]].dateOfSettling[7])
-			{
-				char bufForLargest[2];
-				char bufForR[2];
-				bufForLargest[0] = data[arr[largest]].dateOfSettling[3];
-				bufForLargest[1] = data[arr[largest]].dateOfSettling[4];
-				bufForR[0] = data[arr[r]].dateOfSettling[3];
-				bufForR[0] = data[arr[r]].dateOfSettling[4];
-				if (charToInt(bufForR) > charToInt(bufForLargest))
-				{
-					largest = r;
-				}
-				if (charToInt(bufForR) == charToInt(bufForLargest))
-				{
-					bufForLargest[0] = data[arr[largest]].dateOfSettling[0];
-					bufForLargest[1] = data[arr[largest]].dateOfSettling[1];
-					bufForR[0] = data[arr[r]].dateOfSettling[0];
-					bufForR[1] = data[arr[r]].dateOfSettling[1];
-					if (charToInt(bufForR) > charToInt(bufForLargest))
-					{
-						largest = r;
-					}
-				}
 			}
 		}
 	}
@@ -130,7 +132,7 @@ void makeHeap(int arr[], int size, int i, record* data, Order order)
 
 }
 
-// Сортировка, пирамидальная, не подходит она тут вообще... Но... Такое задание =)
+// Г‘Г®Г°ГІГЁГ°Г®ГўГЄГ , ГЇГЁГ°Г Г¬ГЁГ¤Г Г«ГјГ­Г Гї, Г­ГҐ ГЇГ®Г¤ГµГ®Г¤ГЁГІ Г®Г­Г  ГІГіГІ ГўГ®Г®ГЎГ№ГҐ... ГЌГ®... Г’Г ГЄГ®ГҐ Г§Г Г¤Г Г­ГЁГҐ =)
 void indexSort(record* data, int* arr, int size, Order order)
 {
 	for (int i = size / 2 - 1; i >= 0; --i)
@@ -144,7 +146,7 @@ void indexSort(record* data, int* arr, int size, Order order)
 	}
 }
 
-// Выводит БД по индексному массиву 
+// Г‚Г»ГўГ®Г¤ГЁГІ ГЃГ„ ГЇГ® ГЁГ­Г¤ГҐГЄГ±Г­Г®Г¬Гі Г¬Г Г±Г±ГЁГўГі 
 void printRecordByIndexArray(int* indexArray, int size)
 {
 	FILE* fileOut;
@@ -162,7 +164,7 @@ void printRecordByIndexArray(int* indexArray, int size)
 }
 
 
-// Поиск, выводит таблицу элементов, найденных по заданному ключу
+// ГЏГ®ГЁГ±ГЄ, ГўГ»ГўГ®Г¤ГЁГІ ГІГ ГЎГ«ГЁГ¶Гі ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў, Г­Г Г©Г¤ГҐГ­Г­Г»Гµ ГЇГ® Г§Г Г¤Г Г­Г­Г®Г¬Гі ГЄГ«ГѕГ·Гі
 void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 {
 	int left = 0;
@@ -247,8 +249,8 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 
 int main()
 {
-	FILE* fileOut; 
-	int tSize = 10;
+	FILE* fileOut;
+	int tSize = 120;
 	fopen_s(&fileOut, Path, "rb");
 	record recordBuffer[Size] = { 0 };
 	int counter = 0;
