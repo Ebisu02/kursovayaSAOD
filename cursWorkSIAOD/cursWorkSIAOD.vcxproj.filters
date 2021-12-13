@@ -27,6 +27,9 @@
     <ClCompile Include="part_3.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="part_4.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="part_1.h">
@@ -36,6 +39,9 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="part_3.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="part_4.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
