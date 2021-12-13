@@ -1,5 +1,186 @@
 #include "part_3.h"
 
+int counterp = 0;
+
+int HR, VR;
+
+class tNode
+{
+public:
+	int data;
+	tNode* next;
+
+	tNode() :data()
+	{
+		next = NULL;
+	}
+
+	tNode(int value)
+	{
+		data = value;
+		next = NULL;
+	}
+
+	tNode(int value, tNode* next_pointer)
+	{
+		data = value;
+		next = next_pointer;
+	}
+};
+
+class tList
+{
+protected:
+	static int count;
+
+public:
+	tNode* head;
+	tList()
+	{
+		head = NULL;
+		count++;
+	}
+
+	virtual void push() = 0;
+	virtual void push(int value) = 0;
+	virtual void push(int value, tNode* next_pointer) = 0;
+	virtual void clear() = 0;
+
+	void deleteHead()
+	{
+		try
+		{
+			if (head == NULL) throw "Nothing to delete";
+
+			tNode* p = head->next;
+			delete head;
+			head = p;
+		}
+		catch (const char* exception)
+		{
+			cerr << "Error: " << exception << '\n';
+		}
+	};
+	void print()
+	{
+		try
+		{
+			if (head == NULL) throw "Nothing to print";
+			tNode* pos = head;
+
+			while (pos != NULL)
+			{
+				cout << pos->data << " ";
+				pos = pos->next;
+			}
+			cout << "\n";
+		}
+		catch (const char* exception)
+		{
+			cerr << "Error: " << exception << '\n';
+		}
+	};
+	int getCount()
+	{
+		return count;
+	};
+};
+
+
+int tList::count = 0;
+
+class tQueue : public tList
+{
+protected:
+	tNode* tail;
+
+public:
+	tQueue()
+	{
+		tail = (tNode*)&head;
+	}
+
+	~tQueue()
+	{
+		if (head != NULL) clear();
+		count--;
+	}
+
+	virtual void push()
+	{
+		tNode* p = new tNode();
+
+		if (head != NULL)
+		{
+			tail->next = p;
+		}
+		else
+		{
+			head = p;
+		}
+
+		tail = p;
+	};
+	virtual void push(int value)
+	{
+		tNode* p = new tNode(value);
+
+		if (head != NULL)
+		{
+			tail->next = p;
+		}
+		else
+		{
+			head = p;
+		}
+
+		tail = p;
+	};
+	virtual void push(int value, tNode* next_pointer)
+	{
+		tNode* p = new tNode(value);
+
+		if (head != NULL)
+		{
+			tail->next = p;
+		}
+		else
+		{
+			head = p;
+		}
+
+		tail = p;
+
+		p = next_pointer;
+		tail->next = p;
+		tail = p;
+	};
+	virtual void clear()
+	{
+		try
+		{
+			if (head == NULL) throw "Nothing to free";
+
+			tNode* pos, * q;
+			q = pos = head;
+
+			while (pos != NULL)
+			{
+				pos = q->next;
+				delete q;
+				q = pos;
+			}
+
+			head = NULL;
+			tail = NULL;
+		}
+		catch (const char* exception)
+		{
+			cerr << "Error: " << exception << '\n';
+		}
+	};
+};
+
 void make_b2tree(int D, Vertex*& p)
 {
 	if (!p)
@@ -107,7 +288,7 @@ void print_from_left_to_right(Vertex* p, int* indexArray, record* d, Vertex* roo
 			}
 			else if (chs == 2)
 			{
-				char ch[8];
+				char ch[9];
 				cout << "\nEnter a date what u wanna find: (format dd-mm-yy)";
 				cin >> ch;
 				search_in_tree(root, ch, d, indexArray);
