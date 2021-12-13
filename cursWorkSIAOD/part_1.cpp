@@ -1,6 +1,6 @@
 #include "part_1.h"
 
-void printRecord(record* Array, int size)
+void print_record(record* Array, int size)
 {
 	int counter = 0;
 	for (int i = 0; i < size; ++i, ++counter)

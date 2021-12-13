@@ -17,4 +17,4 @@ struct record
 };
 
 
-void printRecord(record* Array, int size);
+void print_record(record* Array, int size);

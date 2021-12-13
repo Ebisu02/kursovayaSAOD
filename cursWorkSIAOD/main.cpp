@@ -11,7 +11,7 @@
 using namespace std;
 
 #include "part_1.h"
-
+#include "part_2.h"
 // k = god poseleniya
 
 class tNode
@@ -193,158 +193,7 @@ public:
 
 
 
-// ×åñòíî - õåð çíàåò çà÷åì ÿ ýòî âûñðàë, ïûòàëñÿ êàê-òî ñðàâíèòü äàòó â ôîðìàòå dd-mm-yy ïîëíîñòüþ
-// Íî ïîêà ÷òî çàáèë õåð, ò.ê. ñèëüíî âëèÿåò íà òðóäîåìêîñòü è âðåìÿ è ñêîðîñòü è âîîáùå... Åáàë ÿ â ðîò ýòî íà ïëþñàõ äåëàòü!
-int charToInt(char* simbol1)
-{
-	return stoi(simbol1);
-}
 
-// Òîæå ñîðòèðîâêà, à èìåííî ôîðìèðîâàíèå êó÷è... Áûëî ëåíü äåëàòü 2 îòäåëüíûå äëÿ 2 ðàçíûõ ñëó÷àåâ, ïîýòîìó ñäåëàë ñëîâàðü
-// Äëÿ äàííîé ñèòó¸âèíû, î÷åíü ëåíèâûé ÿ, óæ èçâèíèòå, çíàþ, ÷òî ýòî ïëîõîé òîí =)
-void makeHeap(int arr[], int size, int i, record* data)
-{
-	int largest = i;
-	int l = 2 * i + 1;
-	int r = 2 * i + 2;
-
-
-	char bufForLargestY[2];
-	char bufForLargestM[2];
-	char bufForLargestD[2];
-
-	bufForLargestY[0] = data[arr[largest]].dateOfSettling[6];
-	bufForLargestY[1] = data[arr[largest]].dateOfSettling[7];
-	bufForLargestM[0] = data[arr[largest]].dateOfSettling[3];
-	bufForLargestM[1] = data[arr[largest]].dateOfSettling[4];
-	bufForLargestD[0] = data[arr[largest]].dateOfSettling[0];
-	bufForLargestD[1] = data[arr[largest]].dateOfSettling[1];
-
-	long int cLargest = charToInt(bufForLargestY) * 12 * 30 + charToInt(bufForLargestM) * 30 + charToInt(bufForLargestD);
-
-
-	if (l < size)
-	{
-		char bufForLY[2];
-		char bufForLM[2];
-		char bufForLD[2];
-
-		bufForLY[0] = data[arr[l]].dateOfSettling[6];
-		bufForLY[1] = data[arr[l]].dateOfSettling[7];
-		bufForLM[0] = data[arr[l]].dateOfSettling[3];
-		bufForLM[1] = data[arr[l]].dateOfSettling[4];
-		bufForLD[0] = data[arr[l]].dateOfSettling[0];
-		bufForLD[1] = data[arr[l]].dateOfSettling[1];
-
-		long int cL = charToInt(bufForLY) * 12 * 30 + charToInt(bufForLM) * 30 + charToInt(bufForLD);
-
-		if (cL == cLargest)
-		{
-			if (l < size && data[arr[l]].streetAdress[0] >= data[arr[largest]].streetAdress[0])
-			{
-				largest = l;
-			}
-		}
-		if (cL > cLargest)
-		{
-			largest = l;
-		}
-	}
-
-	bufForLargestY[0] = data[arr[largest]].dateOfSettling[6];
-	bufForLargestY[1] = data[arr[largest]].dateOfSettling[7];
-	bufForLargestM[0] = data[arr[largest]].dateOfSettling[3];
-	bufForLargestM[1] = data[arr[largest]].dateOfSettling[4];
-	bufForLargestD[0] = data[arr[largest]].dateOfSettling[0];
-	bufForLargestD[1] = data[arr[largest]].dateOfSettling[1];
-
-	cLargest = (charToInt(bufForLargestY) * 12 * 30) + (charToInt(bufForLargestM) * 30) + charToInt(bufForLargestD);
-
-	if (r < size)
-	{
-
-		char bufForRY[2];
-		char bufForRM[2];
-		char bufForRD[2];
-
-		bufForRY[0] = data[arr[r]].dateOfSettling[6];
-		bufForRY[1] = data[arr[r]].dateOfSettling[7];
-		bufForRM[0] = data[arr[r]].dateOfSettling[3];
-		bufForRM[1] = data[arr[r]].dateOfSettling[4];
-		bufForRD[0] = data[arr[r]].dateOfSettling[0];
-		bufForRD[1] = data[arr[r]].dateOfSettling[1];
-
-		long int cR = charToInt(bufForRY) * 12 * 30 + charToInt(bufForRM) * 30 + charToInt(bufForRD);
-		if (cR == cLargest)
-		{
-			if (r < size && data[arr[r]].streetAdress[0] >= data[arr[largest]].streetAdress[0])
-			{
-				largest = r;
-			}
-		}
-		if (cR > cLargest)
-		{
-			largest = r;
-		}
-
-	}
-
-
-
-	if (largest != i)
-	{
-		swap(arr[i], arr[largest]);
-		makeHeap(arr, size, largest, data);
-	}
-
-}
-
-// Ñîðòèðîâêà, ïèðàìèäàëüíàÿ, íå ïîäõîäèò îíà òóò âîîáùå... Íî... Òàêîå çàäàíèå =)
-void indexSort(record* data, int* arr, int size)
-{
-	for (int i = size / 2 - 1; i >= 0; --i)
-	{
-		makeHeap(arr, size, i, data);
-	}
-	for (int i = size - 1; i >= 0; --i)
-	{
-		swap(arr[0], arr[i]);
-		makeHeap(arr, i, 0, data);
-	}
-}
-
-// Âûâîäèò ÁÄ ïî èíäåêñíîìó ìàññèâó 
-void printRecordByIndexArray(int* indexArray, record* recordBuffer, int size)
-{
-	int counter = 0;
-	cout << "FullName                        |" << "Street Name        |" << "House Number|" << "Floor number|" << "Date of Settling|" << "\n";
-	cout << "--------------------------------|-------------------|------------|------------|----------------|\n";
-	for (int i = 0; i < size; ++i)
-	{
-		if (counter - 20 == 0)
-		{
-			counter = 0; 
-			cout << "\nIf u wanna see next page - write '1', if not - write '0'\n";
-			int chs = -1;
-			cin >> chs;
-			if (chs == 0)
-			{
-				return;
-			}
-			else if (chs == 1)
-			{
-				goto next;
-			}
-			else
-			{
-				cout << "\nInvalid choice\n";
-			}
-		}
-		next:
-		++counter;
-		cout << recordBuffer[indexArray[i]].fullName << " | " << recordBuffer[indexArray[i]].streetAdress << " | " << recordBuffer[indexArray[i]].numOfHouse << " \t | " << recordBuffer[indexArray[i]].numOfFloor << "\t      | " << recordBuffer[indexArray[i]].dateOfSettling << "      |" << "\n";
-	}
-}
 
 struct Vertex {
 	int data;
@@ -564,7 +413,7 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 			delete btree;
 			return;
 		}
-		if (charToInt(bufForCompare) < charToInt(key))
+		if (char_to_int(bufForCompare) < char_to_int(key))
 		{
 			left = mid + 1;
 		}
@@ -798,12 +647,12 @@ void menu()
 	{
 		if (choose == 1)
 		{
-			printRecord(recArray, Size);
+			print_record(recArray, Size);
 		}
 		if (choose == 2)
 		{
-			indexSort(recArray, indArray, Size);
-			printRecordByIndexArray(indArray, recArray, Size);
+			index_sort(recArray, indArray, Size);
+			print_record_by_index_array(indArray, recArray, Size);
 		}
 		if (choose == 3)
 		{
@@ -815,7 +664,7 @@ void menu()
 			{
 				bIndArray[i] = i;
 			}
-			indexSort(recArray, bIndArray, Size);
+			index_sort(recArray, bIndArray, Size);
 			findByYearOfSettling(bIndArray, recArray, Size, key);
 		}
 		if (choose == 4)
