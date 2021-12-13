@@ -147,20 +147,36 @@ void indexSort(record* data, int* arr, int size, Order order)
 }
 
 // Âûâîäèò ÁÄ ïî èíäåêñíîìó ìàññèâó 
-void printRecordByIndexArray(int* indexArray, int size)
+void printRecordByIndexArray(int* indexArray, record* recordBuffer, int size)
 {
-	FILE* fileOut;
-	fopen_s(&fileOut, Path, "rb");
-	record recordBuffer[Size] = { 0 };
 	int counter = 0;
-	counter = fread((record*)recordBuffer, sizeof(record), Size, fileOut);
 	cout << "FullName                        |" << "Street Name        |" << "House Number|" << "Floor number|" << "Date of Settling|" << "\n";
 	cout << "--------------------------------|-------------------|------------|------------|----------------|\n";
 	for (int i = 0; i < size; ++i)
 	{
+		if (counter - 20 == 0)
+		{
+			counter = 0; 
+			cout << "\nIf u wanna see next page - write '1', if not - write '0'\n";
+			int chs = -1;
+			cin >> chs;
+			if (chs == 0)
+			{
+				return;
+			}
+			else if (chs == 1)
+			{
+				goto next;
+			}
+			else
+			{
+				cout << "\nInvalid choice\n";
+			}
+		}
+		next:
+		++counter;
 		cout << recordBuffer[indexArray[i]].fullName << " | " << recordBuffer[indexArray[i]].streetAdress << " | " << recordBuffer[indexArray[i]].numOfHouse << " \t | " << recordBuffer[indexArray[i]].numOfFloor << "\t      | " << recordBuffer[indexArray[i]].dateOfSettling << "      |" << "\n";
 	}
-	fclose(fileOut);
 }
 
 
@@ -247,39 +263,99 @@ void findByYearOfSettling(int* indexArray, record* data, int size, char* key)
 	return;
 }
 
+void printRecord(record* Array, int size)
+{
+	int counter = 0;
+	for (int i = 0; i < size; ++i, ++counter)
+	{
+		next:
+		cout << Array[i].fullName << " \t| " << Array[i].streetAdress << " \t| " << Array[i].numOfHouse << " \t| " << Array[i].numOfFloor << " \t| " << Array[i].dateOfSettling << "\n";
+		if (counter == 20)
+		{
+			counter = 0;
+			cout << "\nIf u wanna see next page - write '1', if not - write '0'\n";
+			int chs = -1;
+			cin >> chs;
+			if (chs == 0)
+			{
+				return;
+			}
+			else if (chs == 1)
+			{
+				goto next;
+			}
+			else
+			{
+				cout << "\nInvalid choice\n";
+			}
+		}
+	}
+}
+
+void make_binary_b_tree()
+
+void menu()
+{
+	int arr[Size];
+	record recArray[Size] = { 0 };
+	int c = 0;
+	FILE* file;
+	fopen_s(&file, Path, "rb");
+	c = fread((record*)recArray, sizeof(record), Size, file);
+	int indArray[Size];
+	for (int i = 0; i < Size; ++i)
+	{
+		indArray[i] = i;
+	}
+
+	cout << "Menu\n\nWrite a number of point what u want to use\n1.Print records\n2.Print sorted records by:\n\t1)Date of settling\n\t2)Name of street\n3)Find a records by key\n0.Exit\n";
+	int choose = 0;
+	while (cin >> choose)
+	{
+		cout << "\n\nWrite a number of point what u want to use\n1.Print records\n2.Print sorted records by:\n\t1)Date of settling\n\t2)Name of street\n3)Find a records by key\n0.Exit\n";
+		if (choose == 1)
+		{
+			printRecord(recArray, Size);
+		}
+		if (choose == 2)
+		{
+			cout << "\nChoose how u would like to sort this database:\n1 - By date of settling\n2 - By name of the street\nYour choice = ";
+			int chooseOrder = 0;
+			cin >> chooseOrder; 
+			if (chooseOrder == 1)
+			{
+				indexSort(recArray, indArray, Size, BYDATEOFSETTLING);
+			}
+			if (chooseOrder == 2)
+			{
+				indexSort(recArray, indArray, Size, BYSTREETNAME);
+			}
+			printRecordByIndexArray(indArray, recArray, Size);
+		}
+		if (choose == 3)
+		{
+			char key[2];
+			cout << "\nEnter a key:";
+			cin >> key;
+			int bIndArray[Size];
+			for (int i = 0; i < Size; ++i)
+			{
+				bIndArray[i] = i;
+			}
+			indexSort(recArray, bIndArray, Size, BYDATEOFSETTLING);
+			findByYearOfSettling(bIndArray, recArray, Size, key);
+		}
+		if (choose == 0)
+		{
+			exit(1);
+		}
+	}
+	fclose(file);
+}
+
 int main()
 {
-	FILE* fileOut;
-	int tSize = 120;
-	fopen_s(&fileOut, Path, "rb");
-	record recordBuffer[Size] = { 0 };
-	int counter = 0;
-	counter = fread((record*)recordBuffer, sizeof(record), Size, fileOut);
-	for (int i = 0; i < tSize; ++i)
-	{
-		cout << recordBuffer[i].fullName << " | " << recordBuffer[i].streetAdress << " | " << recordBuffer[i].numOfHouse << " | " << recordBuffer[i].numOfFloor << " | " << recordBuffer[i].dateOfSettling << "\n";
-	}
-	fclose(fileOut);
-
-	cout << "\n\n";
-
-	int* indexArray = new int[tSize];
-	for (int i = 0; i < tSize; ++i)
-	{
-		indexArray[i] = i;
-	}
-	indexSort(recordBuffer, indexArray, tSize, BYDATEOFSETTLING);
-	printRecordByIndexArray(indexArray, tSize);
-
-	char buf[2];
-
-	buf[0] = '9';
-	buf[1] = '5';
-
-	findByYearOfSettling(indexArray, recordBuffer, tSize, buf);
-
-	delete[] indexArray;
-
+	menu();
 	system("PAUSE");
 	return 0;
 }
