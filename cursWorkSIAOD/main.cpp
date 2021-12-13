@@ -441,7 +441,7 @@ void printFromLeftToRight(Vertex* p, int* indexArray, record* d) {
 			cin >> chs;
 			if (chs == 0)
 			{
-				return;
+				exit(0);
 			}
 			else if (chs == 1)
 			{
