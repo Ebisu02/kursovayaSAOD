@@ -10,8 +10,7 @@
 
 using namespace std;
 
-const char Path[] = "../testBase4.dat";
-const int Size = 4000;
+#include "part_1.h"
 
 // k = god poseleniya
 
@@ -192,15 +191,6 @@ public:
 	};
 };
 
-// bd - nas punkt
-struct record
-{
-	char fullName[32]; // <Surname>_<Name>_<Ot4estvo> // Primer - Ïåòpîâ_Èâàí_Ôåäîpîâè÷___________ 
-	char streetAdress[18]; // Primer - Ëåíèíà______________
-	short int numOfHouse; // nomer doma
-	short int numOfFloor; // nomer kvartiri
-	char dateOfSettling[10]; // data zaseleniya // Primer - 29-02-65 // Format: dd-mm-yy
-};
 
 
 // ×åñòíî - õåð çíàåò çà÷åì ÿ ýòî âûñðàë, ïûòàëñÿ êàê-òî ñðàâíèòü äàòó â ôîðìàòå dd-mm-yy ïîëíîñòüþ
