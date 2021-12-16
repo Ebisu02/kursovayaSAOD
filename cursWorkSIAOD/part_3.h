@@ -3,7 +3,8 @@
 #include "part_1.h"
 #include "part_2.h"
 
-struct Vertex {
+struct Vertex
+{
 	int data;
 	int balance;
 	Vertex* left, * right;

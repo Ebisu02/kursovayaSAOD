@@ -2,6 +2,7 @@
 #include "part_1.h"
 #include <vector>
 #include <fstream>
+#include <windows.h>
 
 struct symb {
 	char simbol;
@@ -17,3 +18,4 @@ int up(int n, double q, std::vector<symb>& c, double* chance);
 void down(int n, int j, std::vector<symb>& c);
 void huffman_coding(int n, double* chance, std::vector<symb>& c);
 void decode(ifstream& f);
+void sorting(std::vector<symb>& c, int L, int R);

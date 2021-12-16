@@ -10,7 +10,7 @@ double mid_length(std::vector<symb>& c)
 
 double entropy(std::vector<symb>& c)
 {
-	float entrop = -1;
+	float entrop = 0;
 	for (int i = 0; i < c.size(); i++)
 		entrop += c[i].probability * log2(c[i].probability);
 	return -entrop;
@@ -139,10 +139,13 @@ void decode(ifstream& f)
 
 
 	int count = 0;
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < c.size(); ++i, ++count) {
 		if (count < 20)
 		{
-			std::cout << "\t" << i + 1 << ") " << "[" << c[i].simbol << "]" << "\t" << c[i].amount_of_uses << "\t\t" << c[i].probability << "\t\t" << c[i].code << "\n";
+			if (c[i].simbol != '\r' || c[i].simbol != '\n' || c[i].simbol)
+				std::cout << "\t" << i + 1 << ") " << "[" << c[i].simbol << "]" << "\t" << c[i].amount_of_uses << "\t\t" << c[i].probability << "\t\t" << c[i].code << "\n";
 		}
 		else
 		{
